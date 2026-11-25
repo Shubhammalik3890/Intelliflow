@@ -1,0 +1,68 @@
+.venv/
+.venv312/
+.env
+.env.*
+!.env.example
+__pycache__/
+*.py[cod]
+.streamlit/
+results/*.csv
+results/*.json
+
+# Python virtual environments
+venv/
+.venv/
+.venv*/
+**/venv/
+**/.venv/
+**/.venv*/
+
+# Python cache
+__pycache__/
+*.py[cod]
+.pytest_cache/
+
+# Environment variables
+.env
+.env.*
+
+# Database test files
+backend/test_intelliflow.db
+
+# IDE files
+.vscode/
+
+# Build files
+build/
+dist/
+*.egg-info/
+
+# Logs
+*.log
+
+
+# Node.js dependencies
+node_modules/
+**/node_modules/
+
+# Frontend build output
+dist/
+build/
+.next/
+coverage/
+
+# Python environments
+venv/
+.venv/
+.venv312/
+**/__pycache__/
+*.pyc
+.pytest_cache/
+
+# Environment secrets
+.env
+.env.*
+!.env.example
+
+# Logs
+*.log

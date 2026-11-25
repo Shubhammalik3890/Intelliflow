@@ -1,0 +1,101 @@
+%PDF-1.4
+%‚„œ”
+1 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>
+endobj
+2 0 obj
+<< /Length 3167 >>
+stream
+BT /F1 20 Tf 50 742 Td (A Plain-Language Guide to the src Folder) Tj ET
+BT /F1 10.5 Tf 50 717 Td () Tj ET
+BT /F1 11 Tf 50 701 Td (This project simulates placing computing tasks on Edge, Fog, and Cloud machines.) Tj ET
+BT /F1 11 Tf 50 685 Td (Each source file has one main responsibility; together, they model task placement,) Tj ET
+BT /F1 11 Tf 50 669 Td (resource usage, virtual machines, and experiment results.) Tj ET
+BT /F1 10.5 Tf 50 653 Td () Tj ET
+BT /F1 15 Tf 50 637 Td (src/__init__.py) Tj ET
+BT /F1 10.5 Tf 50 612 Td (Marks src as a Python package. It also contains a short package description. This lets) Tj ET
+BT /F1 10.5 Tf 50 596 Td (other code import modules using names such as src.tasks.) Tj ET
+BT /F1 10.5 Tf 50 580 Td () Tj ET
+BT /F1 15 Tf 50 564 Td (src/tasks.py) Tj ET
+BT /F1 10.5 Tf 50 539 Td (Defines the Task object: a submitted unit of work, including its ID, tenant, CPU and) Tj ET
+BT /F1 10.5 Tf 50 523 Td (memory needs, latency sensitivity, and description. The create_task helper checks that) Tj ET
+BT /F1 10.5 Tf 50 507 Td (CPU and memory are positive and that sensitivity is High, Medium, or Low. It can also) Tj ET
+BT /F1 10.5 Tf 50 491 Td (convert a task to a dictionary.) Tj ET
+BT /F1 10.5 Tf 50 475 Td () Tj ET
+BT /F1 15 Tf 50 459 Td (src/nodes.py) Tj ET
+BT /F1 10.5 Tf 50 434 Td (Defines a compute Node and its available CPU, memory, and latency. It checks whether a) Tj ET
+BT /F1 10.5 Tf 50 418 Td (task fits, tracks resource use, and can release or reset resources. create_default_nodes) Tj ET
+BT /F1 10.5 Tf 50 402 Td (makes the sample Edge, Fog, and Cloud machines.) Tj ET
+BT /F1 10.5 Tf 50 386 Td () Tj ET
+BT /F1 15 Tf 50 370 Td (src/vm_manager.py) Tj ET
+BT /F1 10.5 Tf 50 345 Td (Defines VirtualMachine records and a VMManager that creates and tracks them. Creating a) Tj ET
+BT /F1 10.5 Tf 50 329 Td (VM reserves the task resources on its host node. Stopping a running VM releases those) Tj ET
+BT /F1 10.5 Tf 50 313 Td (resources; helper methods list running VMs.) Tj ET
+BT /F1 10.5 Tf 50 297 Td () Tj ET
+BT /F1 15 Tf 50 281 Td (src/scheduler.py) Tj ET
+BT /F1 10.5 Tf 50 256 Td (Chooses a suitable node and places tasks on it. A node must meet the task's latency) Tj ET
+BT /F1 10.5 Tf 50 240 Td (budget and have enough CPU and memory. Lowest-latency-first picks the quickest eligible) Tj ET
+BT /F1 10.5 Tf 50 224 Td (node; Capacity-aware favors the node with lower projected CPU/RAM use. It returns a) Tj ET
+BT /F1 10.5 Tf 50 208 Td (success or failure record.) Tj ET
+BT /F1 10.5 Tf 50 192 Td () Tj ET
+BT /F1 15 Tf 50 176 Td (src/metrics.py) Tj ET
+BT /F1 10.5 Tf 50 151 Td (Turns placement records into a summary: total, successful, and failed tasks, success) Tj ET
+BT /F1 10.5 Tf 50 135 Td (rate, average successful-task latency, and per-node resource usage. results_dataframe) Tj ET
+BT /F1 10.5 Tf 50 119 Td (also presents records as a pandas table with consistent columns.) Tj ET
+BT /F1 10.5 Tf 50 103 Td () Tj ET
+BT /F1 15 Tf 50 87 Td (src/experiments.py) Tj ET
+BT /F1 10.5 Tf 50 62 Td (Runs example simulations by connecting tasks, nodes, the scheduler, and VM manager. It) Tj ET
+BT /F1 9 Tf 50 32 Td (Page 1 of 2) Tj ET
+endstream
+endobj
+3 0 obj
+<< /Type /Page /Parent 6 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 1 0 R >> >> /Contents 2 0 R >>
+endobj
+4 0 obj
+<< /Length 1648 >>
+stream
+BT /F1 10.5 Tf 50 742 Td (compares placement policies, deliberately submits enough repeated tasks to overload the) Tj ET
+BT /F1 10.5 Tf 50 726 Td (sample capacity, and compares baseline infrastructure with a version that has more Edge) Tj ET
+BT /F1 10.5 Tf 50 710 Td (capacity and lower Fog latency. It includes a metrics summary in the results.) Tj ET
+BT /F1 10.5 Tf 50 694 Td () Tj ET
+BT /F1 15 Tf 50 678 Td (src/security.py) Tj ET
+BT /F1 10.5 Tf 50 653 Td (Provides simple tenant-isolation helpers: one filters task records to a tenant, and) Tj ET
+BT /F1 10.5 Tf 50 637 Td (another checks whether a record belongs to that tenant. The code explicitly describes) Tj ET
+BT /F1 10.5 Tf 50 621 Td (this as an educational check, not production authentication.) Tj ET
+BT /F1 10.5 Tf 50 605 Td () Tj ET
+BT /F1 15 Tf 50 589 Td (Typical flow) Tj ET
+BT /F1 10.5 Tf 50 564 Td (1. tasks.py describes and validates a task.) Tj ET
+BT /F1 10.5 Tf 50 548 Td (2. nodes.py supplies the machines and their capacities.) Tj ET
+BT /F1 10.5 Tf 50 532 Td (3. scheduler.py selects a machine; vm_manager.py reserves resources and records a VM.) Tj ET
+BT /F1 10.5 Tf 50 516 Td (4. experiments.py runs scenarios; metrics.py summarizes their results.) Tj ET
+BT /F1 10.5 Tf 50 500 Td (5. security.py offers a simple tenant ownership check for task records.) Tj ET
+BT /F1 10.5 Tf 50 484 Td () Tj ET
+BT /F1 10.5 Tf 50 468 Td (Scope note: This guide covers Python source files directly inside src. The __pycache__) Tj ET
+BT /F1 10.5 Tf 50 452 Td (folder contains generated bytecode, not hand-written source, so it is not described.) Tj ET
+BT /F1 9 Tf 50 32 Td (Page 2 of 2) Tj ET
+endstream
+endobj
+5 0 obj
+<< /Type /Page /Parent 6 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 1 0 R >> >> /Contents 4 0 R >>
+endobj
+6 0 obj
+<< /Type /Pages /Kids [3 0 R 5 0 R] /Count 2 >>
+endobj
+7 0 obj
+<< /Type /Catalog /Pages 6 0 R >>
+endobj
+xref
+0 8
+0000000000 65535 f 
+0000000015 00000 n 
+0000000085 00000 n 
+0000003304 00000 n 
+0000003430 00000 n 
+0000005130 00000 n 
+0000005256 00000 n 
+0000005319 00000 n 
+trailer
+<< /Size 8 /Root 7 0 R >>
+startxref
+5368
+%%EOF
