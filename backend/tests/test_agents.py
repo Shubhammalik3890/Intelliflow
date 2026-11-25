@@ -3,7 +3,7 @@ from types import SimpleNamespace
 
 import pytest
 
-from app import agents
+import app.agents as agents
 from app.agents import AIProviderError, process_request
 
 

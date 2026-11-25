@@ -8,6 +8,8 @@ Register with an email and password at `/api/auth/register`, or sign in at `/api
 
 `Authorization: Bearer <access_token>`
 
+Registration requires a valid email and a password between 8 and 128 characters. Login requires a valid email and a non-empty password (up to 128 characters); invalid credentials return `401`, while malformed or missing fields return `422`.
+
 The first registered user receives the Admin role; subsequent public registrations receive Employee. The role is assigned by the backend, never trusted from the request. Passwords are stored as salted PBKDF2 hashes. JWTs expire after 12 hours. Configure `JWT_SECRET` on the backend; no Supabase Auth or OAuth credentials are used.
 
 ## Core endpoints

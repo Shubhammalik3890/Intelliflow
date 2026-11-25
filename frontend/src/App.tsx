@@ -1,4 +1,4 @@
-import { FormEvent, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import { NavLink, Navigate, Route, Routes, useNavigate } from "react-router-dom";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
@@ -6,14 +6,14 @@ import {
   Sun, Moon, Workflow, LogOut, Plus,
 } from "lucide-react";
 import { Bar, BarChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
-import { api } from "./api";
+import { api, handleUnauthorized } from "./api";
 
 type RequestRow = {
   id: string; sender: string; subject: string; message: string;
   category: string; department: string; priority: string; status: string;
 };
 
-function Login() {
+function Login({ onAuthenticated }: { onAuthenticated: () => void }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [registering, setRegistering] = useState(false);
@@ -28,6 +28,7 @@ function Login() {
         body: JSON.stringify({ email, password }),
       });
       localStorage.setItem("intelliflow_token", result.access_token);
+      onAuthenticated();
       navigate("/");
     } catch (exc) {
       setError((exc as Error).message);
@@ -51,7 +52,7 @@ function Login() {
   );
 }
 
-function Shell() {
+function Shell({ onLogout }: { onLogout: () => void }) {
   const [dark, setDark] = useState(false);
   const navigate = useNavigate();
   const links = [
@@ -72,7 +73,7 @@ function Shell() {
       <main>
         <header>
           <div />
-          <button className="icon-button" title="Sign out" onClick={() => { localStorage.removeItem("intelliflow_token"); navigate("/login"); }}><LogOut /></button>
+          <button className="icon-button" title="Sign out" onClick={() => { onLogout(); navigate("/login"); }}><LogOut /></button>
         </header>
         <Routes>
           <Route index element={<Dashboard />} />
@@ -246,6 +247,7 @@ function Knowledge() {
       const response = await fetch(`${import.meta.env.VITE_API_URL || "http://localhost:8000"}/api/knowledge/upload`, {
         method: "POST", headers: token ? { Authorization: `Bearer ${token}` } : {}, body: form,
       });
+      if (response.status === 401) handleUnauthorized();
       if (!response.ok) throw new Error("Upload failed");
     },
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ["knowledge"] }),
@@ -275,9 +277,28 @@ function SettingsPage() {
 }
 
 export default function App() {
-  const authenticated = Boolean(localStorage.getItem("intelliflow_token"));
+  const [authenticated, setAuthenticated] = useState(() =>
+    Boolean(localStorage.getItem("intelliflow_token")),
+  );
+  const queryClient = useQueryClient();
+
+  useEffect(() => {
+    function onUnauthorized() {
+      queryClient.clear();
+      setAuthenticated(false);
+    }
+    window.addEventListener("intelliflow:unauthorized", onUnauthorized);
+    return () => window.removeEventListener("intelliflow:unauthorized", onUnauthorized);
+  }, [queryClient]);
+
+  function logout() {
+    localStorage.removeItem("intelliflow_token");
+    queryClient.clear();
+    setAuthenticated(false);
+  }
+
   return <Routes>
-    <Route path="/login" element={<Login />} />
-    <Route path="/*" element={authenticated ? <Shell /> : <Navigate to="/login" replace />} />
+    <Route path="/login" element={<Login onAuthenticated={() => setAuthenticated(true)} />} />
+    <Route path="/*" element={authenticated ? <Shell onLogout={logout} /> : <Navigate to="/login" replace />} />
   </Routes>;
 }

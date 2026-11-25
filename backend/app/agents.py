@@ -91,6 +91,7 @@ Untrusted request data (JSON):
         interaction = _gemini_client(api_key).interactions.create(
             model=model,
             input=prompt,
+            stream=False,
             response_format={
                 "type": "text",
                 "mime_type": "application/json",
@@ -102,7 +103,7 @@ Untrusted request data (JSON):
             "Gemini API request failed. Check the API key, model name, quota, and backend logs."
         ) from exc
 
-    output_text = interaction.output_text
+    output_text = getattr(interaction, "output_text", None)
     if not output_text or not output_text.strip():
         raise AIProviderError("Gemini returned an empty analysis.")
     try:
